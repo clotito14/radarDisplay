@@ -1,11 +1,35 @@
 import urllib.request
 import PySimpleGUI as sg
 from PIL import Image, ImageTk, ImageSequence
+import keyboard
 
 # retrieve KLOT loop gif from internet
 urllib.request.urlretrieve('https://radar.weather.gov/ridge/standard/KLOT_loop.gif', 'KLOT_loop.gif')
 klot_loop_gif_path = 'KLOT_loop.gif'
-gif_filename = klot_loop_gif_path
+gif_filename = klot_loop_gif_path   # by default
+
+urllib.request.urlretrieve('https://radar.weather.gov/ridge/standard/base_velocity/KLOT_loop.gif', 'KLOT_loop_velo.gif')
+klot_loop_velo_gif_path = 'KLOT_loop_velo.gif'
+
+# keypress detection logic
+def on_key_event(event):
+    # get keypress
+    key = event.name
+    global gif_filename
+
+    # Perform your control actions here
+    if key == 'Q':
+        keyboard.unhook_all()
+        exit()
+    elif key == '1':
+        gif_filename = 'KLOT_loop.gif'
+    elif key == '2':
+        gif_filename = 'KLOT_loop_velo.gif'
+    else:
+        return
+
+# listen to keypresses
+keyboard.on_press(on_key_event)
 
 layout = [[sg.Image(key='-IMAGE-')]]
 
